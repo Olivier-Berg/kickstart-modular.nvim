@@ -304,7 +304,7 @@ return {
 
         'prettierd',
 
-        'rustfmt',
+        --'rustfmt', not installed via Mason, installed via rustup
 
         'black',
         'isort',
