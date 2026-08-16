@@ -1,7 +1,2 @@
-return {
-  'github/copilot.vim',
-  lazy = false,
-  config = function()
-    vim.g.copilot_assume_mapped = true
-  end,
-}
+vim.pack.add { 'https://github.com/github/copilot.vim' }
+vim.g.copilot_assume_mapped = true
