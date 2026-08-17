@@ -108,6 +108,17 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+-- Ruff and Pyright both attach to Python buffers and both provide hover;
+-- defer to Pyright's hover since it's more informative, and let Ruff own
+-- linting/formatting/import-sorting.
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('lsp-attach-disable-ruff-hover', { clear = true }),
+  callback = function(event)
+    local client = vim.lsp.get_client_by_id(event.data.client_id)
+    if client and client.name == 'ruff' then client.server_capabilities.hoverProvider = false end
+  end,
+})
+
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
 --  See `:help lsp-config` for information about keys and how to configure
@@ -152,6 +163,7 @@ local servers = {
     },
   },
   pyright = {},
+  ruff = {},
   rust_analyzer = {},
 
   jinja_lsp = {},
@@ -234,10 +246,7 @@ vim.list_extend(ensure_installed, {
 
   --'rustfmt', not installed via Mason, installed via rustup
 
-  'black',
-  'isort',
   'mypy',
-  'flake8',
 
   'goimports',
   'gofumpt',
